@@ -1,7 +1,8 @@
 import logging
 import asyncio
 import importlib
-from Bad import app, Bad, Shizu, Sukh  # Import all clients
+from Bad.Modules import ALL_MODULES
+from Bad import app, Bad, Shizu, Sukh
 from pyrogram import idle
 from telethon.sessions import StringSession
 import Config
