@@ -3,7 +3,7 @@ import sys
 import traceback
 from io import StringIO
 from time import time
-from Bad import app, Bad
+from Bad import app, Bad, Shizu, Sukh, Jass  # Ensure you import Jass
 from inspect import getfullargspec
 from pyrogram import filters, Client as PyroClient
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
@@ -31,7 +31,7 @@ async def edit_or_reply(msg: Message, **kwargs):
     & ~filters.forwarded
     & ~filters.via_bot
 )
-async def executor(client: app, message: Message):
+async def executor(client, message: Message):
     if message.reply_to_message and message.reply_to_message.document:
         document = message.reply_to_message.document
         if document.file_name.endswith(".py"):
@@ -109,7 +109,7 @@ async def executor(client: app, message: Message):
             ]
         )
         await edit_or_reply(message, text=final_output, reply_markup=keyboard)
-               
+
 @app.on_callback_query(filters.regex(r"runtime"))
 async def runtime_func_cq(_, cq):
     runtime = cq.data.split(None, 1)[1]
