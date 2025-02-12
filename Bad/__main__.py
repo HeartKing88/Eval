@@ -46,7 +46,7 @@ async def main():
         except Exception as e:
             LOGGER("Sukh").error(f"Failed to start Sukh: {e}")
 
-    for all_module in Config.ALL_MODULES:
+    for all_module in ALL_MODULES:
         importlib.import_module("Bad.Modules." + all_module)
 
     LOGGER("Bad.Modules").info("Successfully Imported Modules...")
