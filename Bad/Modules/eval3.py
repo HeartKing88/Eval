@@ -71,8 +71,5 @@ async def telegram_eval(update: Update, context: CallbackContext):
 
 # Use the existing Jass application instance
 app_instance = Jass
-app_instance.add_handler(CommandHandler("tgeval", telegram_eval))
+app_instance.add_handler(CommandHandler("telegram_eval", telegram_eval))
 
-# Start the application
-if __name__ == "__main__":
-    app_instance.run_polling()
