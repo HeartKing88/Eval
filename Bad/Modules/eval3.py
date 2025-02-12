@@ -69,8 +69,8 @@ async def telegram_eval(update: Update, context: CallbackContext):
         t2 = time()
         await message.reply_text(final_output)
 
-# Create the application and add the handler
-app_instance = Jass().app  # Ensure this returns an Application instance
+# Use the existing Jass application instance
+app_instance = Jass
 app_instance.add_handler(CommandHandler("tgeval", telegram_eval))
 
 # Start the application
