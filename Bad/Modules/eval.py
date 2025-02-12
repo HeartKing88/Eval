@@ -41,7 +41,7 @@ async def executor(client: app, message: Message):
         else:
             return await edit_or_reply(message, text="<b>Only .py files are supported.</b>")
     elif len(message.command) < 2:
-        return await edit_or_reply(message, text="<b>ᴇᴠᴀʟ ᴛᴏ <blockquote>ᴘʏʀᴏɢʀᴀᴍ<blockquote>  <blockquote>ᴛᴇʟᴇᴛʜᴏɴ<blockquote> ᴄᴏᴅᴇ ?</b>")
+        return await edit_or_reply(message, text="<b>ᴇᴠᴀʟ ᴛᴏ <blockquote>ᴘʏʀᴏɢʀᴀᴍ<blockquote>  <blockquote>ᴛᴇʟᴇᴛʜᴏɴ<blockquote>  ᴄᴏᴅᴇ ?</b>")
     else:
         cmd = message.text.split(" ", maxsplit=1)[1]
 
