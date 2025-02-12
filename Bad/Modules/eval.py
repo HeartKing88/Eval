@@ -3,7 +3,7 @@ import sys
 import traceback
 from io import StringIO
 from time import time
-from Testing import app, Bad
+from Bad import app, Bad
 from inspect import getfullargspec
 from pyrogram import filters, Client as PyroClient
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
