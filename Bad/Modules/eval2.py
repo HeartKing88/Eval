@@ -67,7 +67,8 @@ async def eval_handler(event):
 
 @Bad.on(events.CallbackQuery(data="forceclose"))
 async def forceclose_callback(event):
-    if event.sender_id != int(event.data.decode().split("|")[1]):
+    data_parts = event.data.decode().split("|")
+    if len(data_parts) < 2 or event.sender_id != int(data_parts[1]):
         await event.answer("» ɪᴛ'ʟʟ ʙᴇ ʙᴇᴛᴛᴇʀ ɪғ ʏᴏᴜ sᴛᴀʏ ɪɴ ʏᴏᴜʀ ʟɪᴍɪᴛs ʙᴀʙʏ.", alert=True)
         return
     await event.delete()
