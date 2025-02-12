@@ -7,7 +7,7 @@ from Bad.Modules import ALL_MODULES
 from telethon import TelegramClient
 import Config
 
-# LOGGER HANDLER
+# Logger Handler
 logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s - %(levelname)s] - %(name)s - %(message)s",
@@ -25,15 +25,24 @@ logging.getLogger("telethon").setLevel(logging.ERROR)
 def LOGGER(name: str) -> logging.Logger:
     return logging.getLogger(name)
 
-
-# MAIN FUNCTION
+# Main Function
 async def main():
     await app.start()
     await Bad.start()
+
     for all_module in ALL_MODULES:
-        importlib.import_module("Bad.Modules" + all_module)
+        importlib.import_module("Bad.Modules." + all_module)
+
     LOGGER("Bad.Modules").info("Successfully Imported Modules...")
     LOGGER("Bad").info("Bot Started Successfully...")
+
+    # Send message to Logger group
+    try:
+        await app.send_message(Config.LOGGER_ID, "✅ **Bot Started Successfully!**")
+        LOGGER("Bad").info("Start message sent to LOGGER_ID.")
+    except Exception as e:
+        LOGGER("Bad").error(f"Failed to send start message: {e}")
+
     await idle()
     await app.stop()
     await Bad.disconnect()
