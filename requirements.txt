@@ -1,0 +1,12 @@
+PyrogramMod
+TgCrypto
+httpx==0.27.2
+psutil
+requests
+python-dotenv
+dnspython
+pykeyboard
+aiofiles
+aiohttp
+asyncio
+beautifulsoup4
