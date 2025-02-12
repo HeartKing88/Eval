@@ -1,7 +1,7 @@
 import logging
 import asyncio
 import importlib
-from Bad import app, Bad
+from Bad import app, Bad, Sukh
 from pyrogram import idle
 from Bad.Modules import ALL_MODULES
 from telethon import TelegramClient
@@ -30,6 +30,7 @@ def LOGGER(name: str) -> logging.Logger:
 async def main():
     await app.start()
     await Bad.start()
+    await Sukh.start()
     for all_module in ALL_MODULES:
         importlib.import_module("Bad.Modules" + all_module)
     LOGGER("Bad.Modules").info("Successfully Imported Modules...")
@@ -37,6 +38,7 @@ async def main():
     await idle()
     await app.stop()
     await Bad.disconnect()
+    await Sukh.stop()
     LOGGER("Bad").info("Stopping Bot...")
 
 if __name__ == "__main__":
