@@ -1,7 +1,6 @@
 from pyrogram import Client
 from telethon import TelegramClient
-from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters
+from telegram.ext import Application
 import Config
 
 # Pyrogram Client
@@ -13,13 +12,12 @@ app = Client(
     plugins=dict(root="Bad.Modules")
 )
 
-# Telethon Bot
+# Telethon Client
 Bad = TelegramClient(
-    session="Bad",  # Add a session name here
+    session="Bad",
     api_id=Config.APP_ID,
     api_hash=Config.HASH_ID
 ).start(bot_token=Config.TOKEN)
 
 # Telegram (python-telegram-bot) Client
-telegram_bot = Application.builder().token(Config.TOKEN).build()
-
+Sukh = Application.builder().token(Config.TOKEN).build()
