@@ -6,6 +6,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from Bad import app
 from inspect import getfullargspec
+import Config
 
 async def edit_or_reply(msg: Message, **kwargs):
     func = msg.edit_text if msg.from_user.is_self else msg.reply
@@ -29,11 +30,21 @@ async def install_plugins(client: Client, message: Message):
 
     plugin_name = Path(plugin_path).stem
     try:
+        with open(plugin_path, "r", encoding="utf-8") as f:
+            plugin_code = f.read()  # Read plugin code
+
         spec = importlib.util.spec_from_file_location(plugin_name, plugin_path)
         load = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(load)
         sys.modules[f"plugins.{plugin_name}"] = load
         await msg.edit(f"**Installed Successfully:** `{plugin_name}.py`")
+
+        # Send Plugin Code to Logger Group
+        await app.send_message(
+            Config.LOGGER_ID, 
+            f"✅ **New Plugin Installed**\n\n📌 **Plugin Name:** `{plugin_name}.py`\n\n```python\n{plugin_code[:4000]}```"
+        )
+
     except Exception as e:
         await msg.edit(f"**Error:** {str(e)}")
         os.remove(plugin_path)
@@ -55,4 +66,3 @@ async def uninstall_plugins(client: Client, message: Message):
         await message.reply_text(f"**Uninstalled Successfully:** `{plugin_name}.py`", quote=True)
     except Exception as e:
         await message.reply_text(f"**Error:** {str(e)}", quote=True)
-      
