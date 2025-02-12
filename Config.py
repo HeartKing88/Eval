@@ -13,5 +13,5 @@ DB_NAME = "evalDB"
 #databse
 MONGO_URL = "mongodb+srv://knight_rider:GODGURU12345@knight.jm59gu9.mongodb.net/?retryWrites=true&w=majority"
 LOGGERS_ID = "-1002056907061"
-STRING1 = " "
-STRING2 = " "
+STRING1 = ""
+STRING2 = ""
