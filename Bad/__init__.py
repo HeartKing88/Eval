@@ -35,5 +35,6 @@ Sukh = TelegramClient(
     session=StringSession(Config.STRING2),
     api_id=Config.APP_ID, 
     api_hash=Config.HASH_ID
+)
 
-plugins = dict(root="Bad.Modules")
+plugins = dict(root="Bad.Modules")  # Yeh alag likho, Sukh ke andar mat daalo
