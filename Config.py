@@ -12,6 +12,6 @@ TOKEN = "8078694582:AAEfQlQf_MLckMSFzojM62c4Kxa1oqOn3Mw"
 DB_NAME = "evalDB"
 #databse
 MONGO_URL = "mongodb+srv://knight_rider:GODGURU12345@knight.jm59gu9.mongodb.net/?retryWrites=true&w=majority"
-LOGGERS_ID = "-1002056907061"
+LOGGER_ID = "-1002056907061"
 STRING1 = ""
 STRING2 = ""
