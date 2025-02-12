@@ -15,8 +15,7 @@ async def start_command(client, message):
 
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("👑 ᴏᴡɴᴇʀ", url="https://t.me/II_BAD_BABY_II")],
-        [InlineKeyboardButton("🔔 sᴜᴘᴘᴏʀᴛ", url="https://t.me/PBX_CHAT")],
-        [InlineKeyboardButton("🛠 ᴜᴘᴅᴀᴛᴇ", url="https://t.me/HEROKUBIN_01")]
+        [InlineKeyboardButton("🔔 sᴜᴘᴘᴏʀᴛ", url="https://t.me/PBX_CHAT"), InlineKeyboardButton("🛠 ᴜᴘᴅᴀᴛᴇ", url="https://t.me/HEROKUBIN_01")]
     ])
 
     # URL of the image you want to include
