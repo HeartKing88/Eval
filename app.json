@@ -1,0 +1,30 @@
+{
+  "name": "Testing-Bot",
+  "description": "A Simple Testing Telegram Bot Written in Python Using Pyrogram Library.",
+  "repository": "https://github.com/Badhacker98/EvalCode",
+  "logo": "", 
+  "stack": "container",
+  "env": {
+    "APP_ID": {
+      "description": "The ID for the app",
+      "value": "", 
+      "required": true
+    },
+    "HASH_ID": {
+      "description": "The hash ID for the app",
+      "value": "", 
+      "required": true
+    },
+    "TOKEN": {
+      "description": "Your authentication token",
+      "value": "", 
+      "required": true
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  }
+}
