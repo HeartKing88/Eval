@@ -7,13 +7,13 @@ async def start_command(client, message):
     # Start command message delete karne ke liye
     await message.delete()
 
-    text = """🐋 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛᴇʟᴇɢʀᴀᴍ ᴇᴠᴀʟ ʙᴏᴛ! ✨
+    text = """🐋 **ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛᴇʟᴇɢʀᴀᴍ ᴇᴠᴀʟ ʙᴏᴛ**! ✨
 
-📊 ꜰᴏʀ ᴇᴠᴀʟᴜᴀᴛɪᴏɴ ᴀɴᴅ ɪɴꜰᴏ, ꜱɪᴍᴘʟʏ ᴛʏᴘᴇ ʙᴏᴛ ᴀᴄᴛɪᴠɪᴛʏ ʙᴇʟᴏᴡ!
+📊 **ꜰᴏʀ ᴇᴠᴀʟᴜᴀᴛɪᴏɴ ᴀɴᴅ ɪɴꜰᴏ, ꜱɪᴍᴘʟʏ ᴛʏᴘᴇ ʙᴏᴛ ᴀᴄᴛɪᴠɪᴛʏ ʙᴇʟᴏᴡ**!
 
-🌟 ᴍᴀᴋᴇ ꜱᴜʀᴇ ᴛᴏ ꜰᴇᴇʟ ꜰʀᴇᴇ ᴛᴏ ʀᴇᴀᴄᴛ ᴡɪᴛʜ ᴡɪᴛᴛʏ ꜰᴇᴇᴅʙᴀᴄᴋ!
+🌟 **ᴍᴀᴋᴇ ꜱᴜʀᴇ ᴛᴏ ꜰᴇᴇʟ ꜰʀᴇᴇ ᴛᴏ ʀᴇᴀᴄᴛ ᴡɪᴛʜ ᴡɪᴛᴛʏ ꜰᴇᴇᴅʙᴀᴄᴋ**!
 
-💫 ꜰᴏʀ ᴅᴇᴛᴀɪʟᴇᴅ ᴜꜱᴀɢᴇ , ᴛʏᴘᴇ /help ꜰᴏʀ ᴍᴏʀᴇ ɪɴꜰᴏ! 📖"""
+💫 **ꜰᴏʀ ᴅᴇᴛᴀɪʟᴇᴅ ᴜꜱᴀɢᴇ , ᴛʏᴘᴇ /help ꜰᴏʀ ᴍᴏʀᴇ ɪɴꜰᴏ**! 📖"""
 
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("👑 ᴏᴡɴᴇʀ", url="https://t.me/II_BAD_BABY_II")],
