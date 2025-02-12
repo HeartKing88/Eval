@@ -2,7 +2,7 @@ from pyrogram import Client
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 import Config
-import telegram
+
 
 # Pyrogram Bot Client (With Bot Token)
 app = Client(
