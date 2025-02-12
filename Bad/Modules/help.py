@@ -1,7 +1,8 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-@Client.on_message(filters.command("help"))
+
+@app.on_message(filters.command("help") & ~filters.forwarded & ~filters.via_bot)
 async def help_command(client, message):
     text = """Wᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ʙᴏᴛ! Bᴇʟᴏᴡ ʏᴏᴜ ᴡɪʟʟ ғɪɴᴅ ᴀ ʟɪsᴛ ᴏғ ᴄᴏᴍᴍᴀɴᴅs ʏᴏᴜ ᴄᴀɴ ᴜsᴇ, ᴀʟᴏɴɢ ᴡɪᴛʜ ᴇxᴘʟᴀɴᴀᴛɪᴏɴs ᴀɴᴅ ᴇxᴀᴍᴘʟᴇs ғᴏʀ ᴇᴀᴄʜ.
 
