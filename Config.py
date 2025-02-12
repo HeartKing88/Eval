@@ -12,3 +12,4 @@ TOKEN = "7280541678:AAHWXTNqehfQYuYT-WbSOmPKNZJKCdMwm2E"
 DB_NAME = "shizuDB"
 #databse
 MONGO_URL = "mongodb+srv://knight_rider:GODGURU12345@knight.jm59gu9.mongodb.net/?retryWrites=true&w=majority"
+LOGGERS_ID = "-1002056907061"
