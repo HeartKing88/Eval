@@ -31,7 +31,6 @@ Bad = TelegramClient(
 
 # Telegram (python-telegram-bot) Client
 Jass = Application.builder().token(Config.TOKEN).build()
-Jass.initialize()  # Initialize the Application
 
 plugins = dict(root="Bad.Modules")
 
