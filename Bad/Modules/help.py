@@ -12,8 +12,6 @@ async def help_command(client, message):
 /eval [expression] ➕: Evaluate a mathematical expression or code snippet.
 /sh [command] 💻: Execute a shell command and return its output.
 /install [package_name] 📦: Install a specified package or software.
-/rs 🔄: Restart the bot or service.
-
-For detailed usage, type /help for more info! 📖"""
+/rs 🔄: Restart the bot or service."""
 
     await message.reply_text(text)
