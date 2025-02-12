@@ -29,10 +29,6 @@ Bad = TelegramClient(
              api_hash=Config.HASH_ID
              ).start(bot_token=Config.TOKEN)
 
-# Telegram (python-telegram-bot) Client
-Jass = Application.builder().token(Config.TOKEN).build()
-
-plugins = dict(root="Bad.Modules")
 
 # Telethon User Client (Without Bot Token)
 Sukh = TelegramClient(
@@ -41,4 +37,10 @@ Sukh = TelegramClient(
     api_hash=Config.HASH_ID
 )
 
-plugins = dict(root="Bad.Modules")  # Yeh alag likho, Sukh ke andar mat daalo
+plugins = dict(root="Bad.Modules")
+
+
+# Telegram (python-telegram-bot) Client
+Jass = Application.builder().token(Config.TOKEN).build()
+
+plugins = dict(root="Bad.Modules")
