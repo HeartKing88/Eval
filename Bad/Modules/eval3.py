@@ -71,7 +71,7 @@ async def telegram_eval(update: Update, context: CallbackContext):
 
 # Create the application and add the handler
 app = Jass().app
-app.add_handler(CommandHandler("eval", telegram_eval))
+app.add_handler(CommandHandler("tgeval", telegram_eval))
 
 # Start the application
 if __name__ == "__main__":
