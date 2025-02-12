@@ -1,8 +1,8 @@
 from pyrogram import Client
 from telethon import TelegramClient
 from telethon.sessions import StringSession
+from telegram.ext import Application
 import Config
-
 
 # Pyrogram Bot Client (With Bot Token)
 app = Client(
@@ -28,6 +28,9 @@ Bad = TelegramClient(
              api_id=Config.APP_ID, 
              api_hash=Config.HASH_ID
              ).start(bot_token=Config.TOKEN)
+
+# Telegram (python-telegram-bot) Client
+Jass = Application.builder().token(Config.TOKEN).build()
 
 plugins = dict(root="Bad.Modules")
 
