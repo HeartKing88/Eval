@@ -21,4 +21,8 @@ async def start_command(client, message):
         [InlineKeyboardButton("🛠 ᴜᴘᴅᴀᴛᴇ", url="https://t.me/HEROKUBIN_01")]
     ])
 
-    await message.reply_text(text, reply_markup=keyboard)
+    # URL of the image you want to include
+    image_url = "https://files.catbox.moe/n8sm5r.jpg"
+
+    # Send the photo with the text and keyboard
+    await message.reply_photo(photo=image_url, caption=text, reply_markup=keyboard)
