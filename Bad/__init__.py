@@ -41,6 +41,6 @@ plugins = dict(root="Bad.Modules")
 
 
 # Telegram (python-telegram-bot) Client
-Jass = Application.builder().token(Config.TOKEN).build()
+application = Application.builder().token(Config.TOKEN).build()
 
 plugins = dict(root="Bad.Modules")
