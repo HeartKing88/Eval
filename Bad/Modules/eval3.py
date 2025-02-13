@@ -6,15 +6,22 @@ from time import time
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from Bad import application  
-import textwrap  # Add this import
+import textwrap  
 
 async def aexec(code, bot, message):
-    code = f"async def __aexec(bot, message):\n{textwrap.indent(code, '    ')}"
-    exec(code)
-    return await locals()["__aexec"](bot, message)
+    # Format the code properly for async execution
+    wrapped_code = f"async def __aexec(bot, message):\n{textwrap.indent(code, '    ')}"
+    
+    local_vars = {}
+    try:
+        exec(wrapped_code, globals(), local_vars)
+        return await local_vars["__aexec"](bot, message)
+    except SyntaxError as e:
+        return f"SyntaxError: {e}"
 
 async def telegram_eval(update: Update, context: CallbackContext):
     message = update.message
+    
     if message.reply_to_message and message.reply_to_message.document:
         document = message.reply_to_message.document
         if document.file_name.endswith('.py'):
@@ -36,14 +43,19 @@ async def telegram_eval(update: Update, context: CallbackContext):
     redirected_output = sys.stdout = StringIO()
     redirected_error = sys.stderr = StringIO()
     stdout, stderr, exc = None, None, None
+
     try:
-        await aexec(cmd, context.bot, message)
+        output = await aexec(cmd, context.bot, message)
+        if output:
+            stdout = str(output)
     except Exception:
         exc = traceback.format_exc()
-    stdout = redirected_output.getvalue()
+    
+    stdout = redirected_output.getvalue() if not stdout else stdout
     stderr = redirected_error.getvalue()
     sys.stdout = old_stdout
     sys.stderr = old_stderr
+
     evaluation = '\n'
     if exc:
         evaluation += exc
@@ -53,7 +65,9 @@ async def telegram_eval(update: Update, context: CallbackContext):
         evaluation += stdout
     else:
         evaluation += 'Success'
+
     final_output = f"<b>⥤ ʀᴇsᴜʟᴛ :</b>\n<pre language='python'>{evaluation}</pre>"
+    
     if len(final_output) > 4096:
         filename = "output.txt"
         with open(filename, "w+", encoding="utf8") as out_file:
