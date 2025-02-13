@@ -31,6 +31,7 @@ async def main():
     await app.start()
     await Bad.start()
     await Jass.initialize()  # Initialize the Application
+    await Jass.run_polling()
     await Jass.start()  # Start Telegram (python-telegram-bot) Client
 
     # Start Pyrogram User Session if available
