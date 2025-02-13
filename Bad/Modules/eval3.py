@@ -3,21 +3,22 @@ import sys
 import traceback
 from io import StringIO
 from time import time
+import textwrap
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from Bad import application  
-import textwrap  
 
 async def aexec(code, bot, message):
-    # Format the code properly for async execution
-    wrapped_code = f"async def __aexec(bot, message):\n{textwrap.indent(code, '    ')}"
+    """Safely executes async Python code."""
+    local_vars = {"bot": bot, "message": message}
     
-    local_vars = {}
     try:
-        exec(wrapped_code, globals(), local_vars)
-        return await local_vars["__aexec"](bot, message)
+        exec(f"async def __aexec():\n{textwrap.indent(code, '    ')}", local_vars)
+        return await local_vars["__aexec"]()
     except SyntaxError as e:
         return f"SyntaxError: {e}"
+    except Exception as e:
+        return f"Error: {traceback.format_exc()}"
 
 async def telegram_eval(update: Update, context: CallbackContext):
     message = update.message
@@ -31,30 +32,26 @@ async def telegram_eval(update: Update, context: CallbackContext):
         else:
             await message.reply_text('<b>Only .py files are supported.</b>')
             return
-    elif len(context.args) < 1:
+    elif not context.args:
         await message.reply_text('<b>Provide code to evaluate.</b>')
         return
     else:
         cmd = " ".join(context.args)
 
     t1 = time()
-    old_stderr = sys.stderr
-    old_stdout = sys.stdout
-    redirected_output = sys.stdout = StringIO()
-    redirected_error = sys.stderr = StringIO()
-    stdout, stderr, exc = None, None, None
+    old_stdout, old_stderr = sys.stdout, sys.stderr
+    redirected_output, redirected_error = StringIO(), StringIO()
+    sys.stdout, sys.stderr = redirected_output, redirected_error
 
+    stdout, stderr, exc = None, None, None
     try:
         output = await aexec(cmd, context.bot, message)
-        if output:
-            stdout = str(output)
+        stdout = str(output) if output else redirected_output.getvalue()
     except Exception:
         exc = traceback.format_exc()
     
-    stdout = redirected_output.getvalue() if not stdout else stdout
     stderr = redirected_error.getvalue()
-    sys.stdout = old_stdout
-    sys.stderr = old_stderr
+    sys.stdout, sys.stderr = old_stdout, old_stderr
 
     evaluation = '\n'
     if exc:
@@ -67,19 +64,17 @@ async def telegram_eval(update: Update, context: CallbackContext):
         evaluation += 'Success'
 
     final_output = f"<b>⥤ ʀᴇsᴜʟᴛ :</b>\n<pre language='python'>{evaluation}</pre>"
-    
+
     if len(final_output) > 4096:
         filename = "output.txt"
         with open(filename, "w+", encoding="utf8") as out_file:
             out_file.write(str(evaluation))
-        t2 = time()
         await message.reply_document(
             document=open(filename, "rb"),
             caption=f"<b>⥤ ᴇᴠᴀʟ :</b>\n<code>{cmd[0:980]}</code>\n\n<b>⥤ ʀᴇsᴜʟᴛ :</b>\nAttached Document",
         )
         os.remove(filename)
     else:
-        t2 = time()
         await message.reply_text(final_output)
 
 # Use the existing Jass application instance
