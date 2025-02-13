@@ -2,7 +2,7 @@ import logging
 import asyncio
 import importlib
 from Bad.Modules import ALL_MODULES
-from Bad import app, Bad, Shizu, Sukh, Jass, application
+from Bad import app, Bad, Shizu, Sukh, application
 from pyrogram import idle
 from telethon.sessions import StringSession
 import Config
