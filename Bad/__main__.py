@@ -34,6 +34,7 @@ def LOGGER(name: str) -> logging.Logger:
 async def main():
     await app.start()
     await Bad.start()
+    await application.run_polling()
     await application.initialize()  # Initialize the Application
     await application.start()  # Start Telegram (python-telegram-bot) Client
 
