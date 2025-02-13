@@ -8,10 +8,8 @@ from telegram.ext import Application, CommandHandler, CallbackContext
 from Bad import application  
 
 async def aexec(code, bot, message):
-    exec(
-        "async def __aexec(bot, message):\n" +
-        "".join(f"    {a}\n" for a in code.split('\n'))
-    )
+    code = f"async def __aexec(bot, message):\n{textwrap.indent(code, '    ')}"
+    exec(code)
     return await locals()["__aexec"](bot, message)
 
 async def telegram_eval(update: Update, context: CallbackContext):
