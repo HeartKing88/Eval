@@ -5,12 +5,12 @@ from io import StringIO
 from time import time
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
-from Bad import application  # Ensure Jass is correctly defined to return an Application instance
+from Bad import application  
 
 async def aexec(code, bot, message):
     exec(
-        "async def __aexec(bot, message): "
-        + "".join(f"\n {a}" for a in code.split("\n"))
+        "async def __aexec(bot, message):\n"
+        + "".join(f"{a}\n" for a in code.split('\n'))
     )
     return await locals()["__aexec"](bot, message)
 
@@ -18,15 +18,15 @@ async def telegram_eval(update: Update, context: CallbackContext):
     message = update.message
     if message.reply_to_message and message.reply_to_message.document:
         document = message.reply_to_message.document
-        if document.file_name.endswith(".py"):
+        if document.file_name.endswith('.py'):
             file_path = await context.bot.get_file(document.file_id).download()
-            with open(file_path, "r") as file:
+            with open(file_path, 'r') as file:
                 cmd = file.read()
         else:
-            await message.reply_text("<b>Only .py files are supported.</b>")
+            await message.reply_text('<b>Only .py files are supported.</b>')
             return
     elif len(context.args) < 1:
-        await message.reply_text("<b>Provide code to evaluate.</b>")
+        await message.reply_text('<b>Provide code to evaluate.</b>')
         return
     else:
         cmd = " ".join(context.args)
@@ -45,7 +45,7 @@ async def telegram_eval(update: Update, context: CallbackContext):
     stderr = redirected_error.getvalue()
     sys.stdout = old_stdout
     sys.stderr = old_stderr
-    evaluation = "\n"
+    evaluation = '\n'
     if exc:
         evaluation += exc
     elif stderr:
@@ -53,7 +53,7 @@ async def telegram_eval(update: Update, context: CallbackContext):
     elif stdout:
         evaluation += stdout
     else:
-        evaluation += "Success"
+        evaluation += 'Success'
     final_output = f"<b>⥤ ʀᴇsᴜʟᴛ :</b>\n<pre language='python'>{evaluation}</pre>"
     if len(final_output) > 4096:
         filename = "output.txt"
@@ -72,4 +72,3 @@ async def telegram_eval(update: Update, context: CallbackContext):
 # Use the existing Jass application instance
 app_instance = application
 app_instance.add_handler(CommandHandler("eval3", telegram_eval))
-
