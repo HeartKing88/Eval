@@ -2,11 +2,15 @@ import logging
 import asyncio
 import importlib
 from Bad.Modules import ALL_MODULES
-from Bad import app, Bad, Shizu, Sukh, application
+from Bad import app, Bad, Shizu, Sukh, Jass, application
 from pyrogram import idle
 from telethon.sessions import StringSession
 import Config
 from telethon import TelegramClient
+import nest_asyncio
+
+# Apply nest_asyncio to handle nested event loops
+nest_asyncio.apply()
 
 # Logger Handler
 logging.basicConfig(
@@ -30,8 +34,9 @@ def LOGGER(name: str) -> logging.Logger:
 async def main():
     await app.start()
     await Bad.start()
+    await Jass.initialize()  # Initialize the Application
+    await Jass.start()  # Start Telegram (python-telegram-bot) Client
     await application.initialize()  # Initialize the Application
-    await application.run_polling()
     await application.start()  # Start Telegram (python-telegram-bot) Client
 
     # Start Pyrogram User Session if available
@@ -68,7 +73,8 @@ async def main():
     # Stop all clients properly
     await app.stop()
     await Bad.disconnect()
-    await application.stop()  # Stop Telegram (python-telegram-bot) Client
+    await Jass.stop()  # Stop Telegram (python-telegram-bot) Client
+    await application.shutdown()  # Shutdown Telegram (python-telegram-bot) Client
 
     if Config.STRING1:
         await Shizu.stop()
