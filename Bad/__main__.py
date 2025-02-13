@@ -2,7 +2,7 @@ import logging
 import asyncio
 import importlib
 from Bad.Modules import ALL_MODULES
-from Bad import app, Bad, Shizu, Sukh, Jass
+from Bad import app, Bad, Shizu, Sukh, application
 from pyrogram import idle
 from telethon.sessions import StringSession
 import Config
@@ -30,9 +30,9 @@ def LOGGER(name: str) -> logging.Logger:
 async def main():
     await app.start()
     await Bad.start()
-    await Jass.initialize()  # Initialize the Application
-    await Jass.run_polling()
-    await Jass.start()  # Start Telegram (python-telegram-bot) Client
+    await application.initialize()  # Initialize the Application
+    await application.run_polling()
+    await application.start()  # Start Telegram (python-telegram-bot) Client
 
     # Start Pyrogram User Session if available
     if Config.STRING1:
@@ -68,7 +68,7 @@ async def main():
     # Stop all clients properly
     await app.stop()
     await Bad.disconnect()
-    await Jass.stop()  # Stop Telegram (python-telegram-bot) Client
+    await application.stop()  # Stop Telegram (python-telegram-bot) Client
 
     if Config.STRING1:
         await Shizu.stop()
