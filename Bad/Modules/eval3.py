@@ -6,6 +6,7 @@ from time import time
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from Bad import application  
+import textwrap  # Add this import
 
 async def aexec(code, bot, message):
     code = f"async def __aexec(bot, message):\n{textwrap.indent(code, '    ')}"
