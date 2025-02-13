@@ -20,7 +20,5 @@ def ping_callback(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
     query.answer("This is the bot's response time!")
     
-    
-
 app_instance = application
-app_instance.add_handler(CommandHandler("ping", telegram_eval)))
+app_instance.add_handler(CommandHandler("ping", ping))
