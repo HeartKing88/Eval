@@ -34,8 +34,6 @@ def LOGGER(name: str) -> logging.Logger:
 async def main():
     await app.start()
     await Bad.start()
-    await Jass.initialize()  # Initialize the Application
-    await Jass.start()  # Start Telegram (python-telegram-bot) Client
     await application.initialize()  # Initialize the Application
     await application.start()  # Start Telegram (python-telegram-bot) Client
 
@@ -73,7 +71,6 @@ async def main():
     # Stop all clients properly
     await app.stop()
     await Bad.disconnect()
-    await Jass.stop()  # Stop Telegram (python-telegram-bot) Client
     await application.shutdown()  # Shutdown Telegram (python-telegram-bot) Client
 
     if Config.STRING1:
