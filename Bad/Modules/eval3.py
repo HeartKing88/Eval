@@ -9,8 +9,8 @@ from Bad import application
 
 async def aexec(code, bot, message):
     exec(
-        "async def __aexec(bot, message):\n"
-        + "".join(f"{a}\n" for a in code.split('\n'))
+        "async def __aexec(bot, message):\n" +
+        "".join(f"    {a}\n" for a in code.split('\n'))
     )
     return await locals()["__aexec"](bot, message)
 
