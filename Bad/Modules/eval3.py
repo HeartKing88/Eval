@@ -5,7 +5,7 @@ from io import StringIO
 from time import time
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
-from Bad import Jass  # Ensure Jass is correctly defined to return an Application instance
+from Bad import application  # Ensure Jass is correctly defined to return an Application instance
 
 async def aexec(code, bot, message):
     exec(
@@ -70,6 +70,6 @@ async def telegram_eval(update: Update, context: CallbackContext):
         await message.reply_text(final_output)
 
 # Use the existing Jass application instance
-app_instance = Jass
+app_instance = application
 app_instance.add_handler(CommandHandler("telegram_eval", telegram_eval))
 
