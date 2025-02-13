@@ -13,10 +13,15 @@ async def aexec(code, bot, message):
     local_vars = {"bot": bot, "message": message}
     
     try:
-        exec(f"async def __aexec():\n{textwrap.indent(code, '    ')}", local_vars)
+        # Properly format the async function for execution
+        wrapped_code = f"async def __aexec():\n{textwrap.indent(code, '    ')}"
+        
+        # Execute the formatted async function
+        exec(wrapped_code, globals(), local_vars)
         return await local_vars["__aexec"]()
+    
     except SyntaxError as e:
-        return f"SyntaxError: {e}"
+        return f"SyntaxError: {traceback.format_exc()}"
     except Exception as e:
         return f"Error: {traceback.format_exc()}"
 
