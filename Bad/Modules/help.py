@@ -15,7 +15,15 @@ async def help_command(client, message):
 
 /install [package_name] 📦: **Install a specified package or software**.
 
-/rs 🔄: **Restart the bot or service**."""
+/rs 🔄: **Restart the bot or service**.
+
+**EVAL HELP**
+
+Pyrogram Eval =
+
+telethon Eval =
+
+Telegram Eval = """
 
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("🔔 sᴜᴘᴘᴏʀᴛ", url="https://t.me/PBX_CHAT"), InlineKeyboardButton("🛠 ᴜᴘᴅᴀᴛᴇ", url="https://t.me/HEROKUBIN_01")]
