@@ -19,11 +19,11 @@ async def help_command(client, message):
 
 **EVAL HELP**
 
-Pyrogram Eval =
+**Pyrogram Eval = from Bad import app**
 
-telethon Eval =
+**telethon Eval = from Bad import Bad**
 
-Telegram Eval = """
+**Telegram Eval = from Bad import application** """
 
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("🔔 sᴜᴘᴘᴏʀᴛ", url="https://t.me/PBX_CHAT"), InlineKeyboardButton("🛠 ᴜᴘᴅᴀᴛᴇ", url="https://t.me/HEROKUBIN_01")]
