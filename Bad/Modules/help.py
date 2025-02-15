@@ -22,7 +22,7 @@ async def help(client: Client, message: Message, from_menu=False):
     bot_id = bot_info.id  # Get the current bot's ID
 
     # Define the photo URL (You can replace this with your desired image URL)
-    photo_url = "https://files.catbox.moe/83d5lc.jpg"
+    photo_url = "https://files.catbox.moe/xmmhdk.jpg"
 
     # Generate buttons for plugins
     buttons = []
