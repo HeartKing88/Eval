@@ -39,3 +39,16 @@ async def log_(client, message):
             await message.reply_text(f"An error occurred while uploading the log file: {str(e)}")
     else:
         await message.reply_text("Log file does not exist.")
+
+@app.on_message(filters.command(["clean"]))
+async def clean_logs(client, message):
+    log_file = "log.txt"
+    if os.path.exists(log_file):
+        try:
+            with open(log_file, "w") as f:
+                f.write("")
+            await message.reply_text("Log file has been cleaned.")
+        except Exception as e:
+            await message.reply_text(f"An error occurred while cleaning the log file: {str(e)}")
+    else:
+        await message.reply_text("Log file does not exist.")
