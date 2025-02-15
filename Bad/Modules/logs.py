@@ -21,10 +21,14 @@ async def post(url: str, *args, **kwargs):
 
 async def BadBin(text):
     resp = await post(f"{BASE}api/v2/paste", data={"text": text})
-    if not resp["success"]:
-        return
-    link = BASE + resp["message"]
-    return link
+    if isinstance(resp, dict):
+        if resp.get("success"):
+            link = BASE + resp["message"]
+            return link
+        else:
+            return f"Failed to upload: {resp.get('message', 'Unknown error')}"
+    else:
+        return f"Unexpected response format: {resp}"
 
 @app.on_message(filters.command(["getlog", "logs", "getlogs"]))
 async def log_(client, message):
