@@ -21,6 +21,9 @@ async def help(client: Client, message: Message, from_menu=False):
     bot_info = await client.get_me()  # Retrieve current bot's details
     bot_id = bot_info.id  # Get the current bot's ID
 
+    # Delete the user message
+    await message.delete()
+
     # Define the photo URL (You can replace this with your desired image URL)
     photo_url = "https://files.catbox.moe/xmmhdk.jpg"
 
