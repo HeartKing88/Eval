@@ -45,7 +45,7 @@ async def help(client: Client, message: Message, from_menu=False):
     # Send the help menu
     if from_menu:
         await message.edit_media(
-            media=InputMediaPhoto(photo_url, caption="👻 ʜᴇʟᴘ ᴍᴇɴᴜ ʙᴀᴅᴜꜱᴇʀ ʙᴏᴛ ❤️\n🔍ꜱᴇʟᴇᴄᴛ ᴀ ᴘʟᴜɢɪɴ ᴛᴏ ꜱᴇᴇ ɪᴛꜱ ᴅ�[...]
+            media=InputMediaPhoto(photo_url, caption="👻 ʜᴇʟᴘ ᴍᴇɴᴜ ʙᴀᴅᴜꜱᴇʀ ʙᴏᴛ ❤️\n🔍ꜱᴇʟᴇᴄᴛ ᴀ ᴘʟᴜɢɪɴ ᴛᴏ ꜱᴇᴇ ɪᴛꜱ ᴅᴇᴛᴀɪʟꜱ📂"),
             reply_markup=InlineKeyboardMarkup(buttons)
         )
     else:
