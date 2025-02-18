@@ -10,3 +10,4 @@ aiofiles
 aiohttp
 asyncio
 beautifulsoup4
+telethon
