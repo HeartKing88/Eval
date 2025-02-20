@@ -12,3 +12,4 @@ asyncio
 beautifulsoup4
 telethon
 nest_asyncio
+telegram
