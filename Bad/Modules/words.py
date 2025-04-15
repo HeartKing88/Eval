@@ -41,7 +41,7 @@ async def new_game(client, message: Message):
     )
     await message.reply("Game started! Guess the 5-letter word!")
 
-@app.on_message(filters.text & ~filters.command())
+@app.on_message(filters.text)
 async def handle_guess(client, message: Message):
     chat_id = message.chat.id
     user_input = message.text.strip().lower()
