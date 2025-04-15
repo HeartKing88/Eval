@@ -2,20 +2,17 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from pymongo import MongoClient
 import random
-import datetime
 from Bad import app
 from Config import MONGO_URL
 
 # Word list (5-letter words)
-WORDS = ["apple", "grape", "peach", "mango", "lemon", "berry", "melon", "olive", "guava", "plums"]
+WORDS = ["apple", "grape", "peach", "mango", "lemon", "berry", "melon", "olive", "guava", "plums", "crown", "flips", "south", "house", "mouse"]
 
 # MongoDB setup
 mongo_client = MongoClient(MONGO_URL)
 db = mongo_client["wordseek_bot"]
 games_col = db["games"]
 scores_col = db["scores"]
-
-
 
 def get_hint(secret, guess):
     result = ""
@@ -28,36 +25,6 @@ def get_hint(secret, guess):
             result += "🟥"
     return result
 
-
-@app.on_message(filters.command("startt"))
-async def start(client, message: Message):
-    await message.reply_text(
-        "**WordSeek**\nA fun and competitive Wordle-style game that you can play directly on Telegram!\n\n"
-        "1. Use /new to start a game. Add me to a group with admin permission to play with your friends.\n"
-        "2. Use /helpp to get help on how to play and commands list.\n\n"
-        "🛠 Developed by You"
-    )
-
-
-@app.on_message(filters.command("helpp"))
-async def help_command(client, message: Message):
-    await message.reply_text(
-        "**How to Play:**\n"
-        "1. You have to guess a random 5-letter word.\n"
-        "2. After each guess, you'll get hints:\n"
-        "   🟩 - Correct letter in the right spot.\n"
-        "   🟨 - Correct letter in the wrong spot.\n"
-        "   🟥 - Letter not in the word.\n"
-        "3. The game ends when someone guesses the word or after 30 guesses.\n\n"
-        "**Commands:**\n"
-        "/new - Start a new game.\n"
-        "/end - End current game (admin only).\n"
-        "/guess <word> - Make a guess.\n"
-        "/leaderboard - Group leaderboard.\n"
-        "/myscore - Your score."
-    )
-
-
 @app.on_message(filters.command("new"))
 async def new_game(client, message: Message):
     chat_id = message.chat.id
@@ -69,52 +36,44 @@ async def new_game(client, message: Message):
     word = random.choice(WORDS)
     games_col.update_one(
         {"chat_id": chat_id},
-        {"$set": {"word": word, "guesses": [], "active": True}},
+        {"$set": {"word": word, "guesses": [], "active": True, "max_points": 30}},
         upsert=True
     )
-    await message.reply("A new game has started! Use `/guess <word>` to play.")
+    await message.reply("Game started! Guess the 5-letter word!")
 
-
-@app.on_message(filters.command("end"))
-async def end_game(client, message: Message):
+@app.on_message(filters.text & ~filters.command)
+async def handle_guess(client, message: Message):
     chat_id = message.chat.id
-    if message.chat.type in ["group", "supergroup"]:
-        member = await client.get_chat_member(chat_id, message.from_user.id)
-        if member.status not in ("administrator", "creator"):
-            return await message.reply("Only admins can end the game.")
+    user_input = message.text.strip().lower()
 
-    games_col.update_one({"chat_id": chat_id}, {"$set": {"active": False}})
-    await message.reply("The current game has been ended.")
-
-
-@app.on_message(filters.command("guess"))
-async def guess_word(client, message: Message):
-    chat_id = message.chat.id
-    if len(message.command) < 2:
-        return await message.reply("Usage: `/guess <5-letter word>`")
-
-    guess = message.command[1].lower()
-    if len(guess) != 5:
-        return await message.reply("Please guess a valid 5-letter word.")
+    if len(user_input) != 5 or not user_input.isalpha():
+        return  # Ignore non-5-letter text inputs
 
     game = games_col.find_one({"chat_id": chat_id})
     if not game or not game.get("active"):
-        return await message.reply("No active game. Start one with /new.")
+        return  # Ignore inputs when no active game exists
 
     correct_word = game["word"]
     guesses = game.get("guesses", [])
-    hint = get_hint(correct_word, guess)
-    guesses.append({"user_id": message.from_user.id, "guess": guess})
+    hint = get_hint(correct_word, user_input)
+    guesses.append({"user_id": message.from_user.id, "guess": user_input})
 
-    if guess == correct_word:
+    if user_input == correct_word:
         user_id = message.from_user.id
+        points_earned = max(0, game["max_points"] - len(guesses))
         scores_col.update_one(
             {"user_id": user_id, "chat_id": chat_id},
-            {"$inc": {"score": 1}, "$setOnInsert": {"username": message.from_user.username or "", "name": message.from_user.first_name}},
+            {
+                "$inc": {"score": points_earned},
+                "$setOnInsert": {"username": message.from_user.username or "", "name": message.from_user.first_name}
+            },
             upsert=True
         )
         games_col.update_one({"chat_id": chat_id}, {"$set": {"active": False}})
-        return await message.reply(f"{hint}\n\n**{message.from_user.first_name}** guessed it right! The word was **{correct_word}**.")
+        return await message.reply(
+            f"{hint}\n\n**{message.from_user.first_name}** guessed it correctly! The word was **{correct_word}**.\n"
+            f"Added {points_earned} to the leaderboard.\nStart a new game with /new."
+        )
 
     if len(guesses) >= 30:
         games_col.update_one({"chat_id": chat_id}, {"$set": {"active": False}})
@@ -122,7 +81,6 @@ async def guess_word(client, message: Message):
 
     games_col.update_one({"chat_id": chat_id}, {"$set": {"guesses": guesses}})
     await message.reply(hint)
-
 
 @app.on_message(filters.command("leaderboard"))
 async def leaderboard(client, message: Message):
@@ -139,7 +97,6 @@ async def leaderboard(client, message: Message):
 
     await message.reply(text)
 
-
 @app.on_message(filters.command("myscore"))
 async def myscore(client, message: Message):
     chat_id = message.chat.id
@@ -148,4 +105,3 @@ async def myscore(client, message: Message):
 
     score = entry.get("score", 0) if entry else 0
     await message.reply(f"**Your score:** {score} point(s).")
-
