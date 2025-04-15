@@ -41,22 +41,27 @@ async def new_game(client, message: Message):
     )
     await message.reply("Game started! Guess the 5-letter word!")
 
-@app.on_message(filters.text)
+@app.on_message(filters.text & ~filters.command(["new", "leaderboard", "myscore"]))
 async def handle_guess(client, message: Message):
     chat_id = message.chat.id
     user_input = message.text.strip().lower()
 
     if len(user_input) != 5 or not user_input.isalpha():
-        return  # Ignore non-5-letter text inputs
+        return
 
     game = games_col.find_one({"chat_id": chat_id})
     if not game or not game.get("active"):
-        return  # Ignore inputs when no active game exists
+        return
 
     correct_word = game["word"]
     guesses = game.get("guesses", [])
     hint = get_hint(correct_word, user_input)
-    guesses.append({"user_id": message.from_user.id, "guess": user_input})
+
+    guesses.append({
+        "user_id": message.from_user.id,
+        "guess": user_input,
+        "hint": hint
+    })
 
     if user_input == correct_word:
         user_id = message.from_user.id
@@ -65,22 +70,28 @@ async def handle_guess(client, message: Message):
             {"user_id": user_id, "chat_id": chat_id},
             {
                 "$inc": {"score": points_earned},
-                "$setOnInsert": {"username": message.from_user.username or "", "name": message.from_user.first_name}
+                "$setOnInsert": {
+                    "username": message.from_user.username or "",
+                    "name": message.from_user.first_name
+                }
             },
             upsert=True
         )
         games_col.update_one({"chat_id": chat_id}, {"$set": {"active": False}})
+        board = "\n".join([f"{g['hint']} `{g['guess'].upper()}`" for g in guesses])
         return await message.reply(
-            f"{hint}\n\n**{message.from_user.first_name}** guessed it correctly! The word was **{correct_word}**.\n"
+            f"{board}\n\n**{message.from_user.first_name}** guessed it correctly! The word was **{correct_word.upper()}**.\n"
             f"Added {points_earned} to the leaderboard.\nStart a new game with /new."
         )
 
     if len(guesses) >= 30:
         games_col.update_one({"chat_id": chat_id}, {"$set": {"active": False}})
-        return await message.reply(f"{hint}\n\nGame over! The correct word was **{correct_word}**.")
+        board = "\n".join([f"{g['hint']} `{g['guess'].upper()}`" for g in guesses])
+        return await message.reply(f"{board}\n\nGame over! The correct word was **{correct_word.upper()}**.")
 
     games_col.update_one({"chat_id": chat_id}, {"$set": {"guesses": guesses}})
-    await message.reply(hint)
+    board = "\n".join([f"{g['hint']} `{g['guess'].upper()}`" for g in guesses])
+    await message.reply(board)
 
 @app.on_message(filters.command("leaderboard"))
 async def leaderboard(client, message: Message):
