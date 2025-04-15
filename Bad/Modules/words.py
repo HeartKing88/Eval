@@ -47,7 +47,9 @@ async def new_game(client, message: Message):
         {"$set": {"word": word, "guesses": [], "active": True, "max_points": 30}},
         upsert=True
     )
-    await message.reply("Game started! Guess the 5-letter word!")
+    await message.reply(
+        "Game started! Guess the 5-letter word! Your guess must be a 5-letter word composed of letters only!"
+    )
 
 @app.on_message(filters.text & ~filters.command(["new", "leaderboard", "myscore"]))
 async def handle_guess(client, message: Message):
@@ -55,18 +57,18 @@ async def handle_guess(client, message: Message):
     user_id = message.from_user.id
     user_input = message.text.strip().lower()
 
-    # Validate if the input is 5 letters and alphabetical
-    if len(user_input) != 5 or not user_input.isalpha():
-        return await message.reply("Your guess must be a 5-letter word composed of letters only!")
-
-    # Validate if the word is in the predefined word list
-    if user_input not in WORDS:
-        return await message.reply(f"`{user_input.upper()}` is not a valid word!")
-
     # Fetch the game for the specific user/group
     game = games_col.find_one({"chat_id": chat_id, "user_id": user_id, "active": True})
     if not game:
         return  # No active game for this user/group
+
+    # Validate if the input is 5 letters and alphabetical
+    if len(user_input) != 5 or not user_input.isalpha():
+        return  # Skip replying to avoid spam
+
+    # Validate if the word is in the predefined word list
+    if user_input not in WORDS:
+        return await message.reply(f"`{user_input.upper()}` is not a valid word!")
 
     correct_word = game["word"]
     guesses = game.get("guesses", [])
