@@ -47,12 +47,12 @@ def get_hint(secret, guess):
     result = ""
     for i in range(5):
         if guess[i] == secret[i]:
-            result += "🟩"
+            result += "🟩 "
         elif guess[i] in secret:
-            result += "🟨"
+            result += "🟨 "
         else:
-            result += "🟥"
-    return result
+            result += "🟥 "
+    return result.strip()
 
 @app.on_message(filters.command("new"))
 async def new_game(client, message: Message):
@@ -80,7 +80,7 @@ async def new_game(client, message: Message):
         "Game started! Guess the 5-letter word! Your guess must be a 5-letter word composed of letters only!"
     )
 
-@app.on_message(filters.text & ~filters.command(["new", "leaderboard", "myscore"]))
+@app.on_message(filters.text & ~filters.command(["new", "leaderboard", "myscore", "end"]))
 async def handle_guess(client, message: Message):
     chat_id = message.chat.id
     user_id = message.from_user.id
@@ -99,8 +99,12 @@ async def handle_guess(client, message: Message):
     if user_input not in WORDS:
         return await message.reply(f"`{user_input.upper()}` is not a valid word!")
 
-    correct_word = game["word"]
+    # Check if the word has already been guessed
     guesses = game.get("guesses", [])
+    if any(guess["guess"] == user_input for guess in guesses):
+        return await message.reply("Someone has already guessed your word. Please try another one!")
+
+    correct_word = game["word"]
     hint = get_hint(correct_word, user_input)
 
     guesses.append({
@@ -137,6 +141,19 @@ async def handle_guess(client, message: Message):
     games_col.update_one({"chat_id": chat_id, "user_id": user_id}, {"$set": {"guesses": guesses}})
     board = "\n".join([f"{g['hint']} `{g['guess'].upper()}`" for g in guesses])
     await message.reply(board)
+
+@app.on_message(filters.command("end"))
+async def end_game(client, message: Message):
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+
+    # Fetch the current game
+    game = games_col.find_one({"chat_id": chat_id, "user_id": user_id, "active": True})
+    if not game:
+        return await message.reply("No active game to end.")
+
+    games_col.update_one({"chat_id": chat_id, "user_id": user_id}, {"$set": {"active": False}})
+    await message.reply("Your game has been ended. No score was awarded.")
 
 @app.on_message(filters.command("leaderboard"))
 async def leaderboard(client, message: Message):
