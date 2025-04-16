@@ -9,7 +9,7 @@ import json
 import os
 
 # Load words directly from words.json
-WORDS_FILE_PATH = os.path.join(os.path.dirname(__file__), "data", "words.json")  # Specify the correct file name
+WORDS_FILE_PATH = os.path.join(os.path.dirname(__file__), "words.json")  # Specify the correct file name
 with open(WORDS_FILE_PATH, "r") as file:
     WORDS = json.load(file)
 
