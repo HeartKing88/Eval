@@ -6,21 +6,13 @@ from Bad import app
 from Config import MONGO_URL
 import os
 import json
+import os
 
-# Load words from external file
-def load_words(file_path):
-    if file_path.endswith(".txt"):
-        with open(file_path, "r") as file:
-            return [line.strip() for line in file.readlines()]
-    elif file_path.endswith(".json"):
-        with open(file_path, "r") as file:
-            return json.load(file)
-    else:
-        raise ValueError("Unsupported file format. Use .txt or .json for the word list.")
+# Load words directly from words.json
+WORDS_FILE_PATH = os.path.join(os.path.dirname(__file__), "data", "words.json")  # Specify the correct file name
+with open(WORDS_FILE_PATH, "r") as file:
+    WORDS = json.load(file)
 
-# Specify the path to the word file
-WORDS_FILE_PATH = os.path.join(os.path.dirname(__file__), "data", "words.txt")  # Change to "words.json" if needed
-WORDS = load_words(WORDS_FILE_PATH)
 
 # MongoDB setup
 mongo_client = MongoClient(MONGO_URL)
