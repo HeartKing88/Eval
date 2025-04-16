@@ -4,38 +4,23 @@ from pymongo import MongoClient
 import random
 from Bad import app
 from Config import MONGO_URL
+import os
+import json
 
-# Word list (5-letter words)
-WORDS = [
-    "apple", "grape", "peach", "mango", "lemon", "berry", "melon", "olive", "guava", "plums",
-    "crown", "flips", "south", "house", "mouse", "night", "query", "eight", "blame", "bring", "charm",
-    "draft", "entry", "field", "glove", "hover", "input", "joker", "knife", "liver", "mirth", "nerds",
-    "orbit", "piano", "quiet", "reach", "slide", "table", "uncle", "vapor", "weird", "xenon", "yield",
-    "zebra", "adobe", "bison", "canal", "daisy", "eagle", "fancy", "giant", "hinge", "icily", "jolly",
-    "karma", "latch", "motel", "noisy", "ocean", "pound", "quilt", "radar", "shelf", "thorn", "under",
-    "vivid", "whale", "yacht", "zesty", "adapt", "banjo", "cabin", "dodge", "embed", "ferry", "gloom",
-    "hippo", "index", "jumpy", "kayak", "lunar", "manor", "naval", "oxide", "polar", "quack", "robot",
-    "siren", "trick", "utter", "vigor", "woven", "yummy", "zoned", "amber", "broom", "couch", "drown",
-    "exile", "fraud", "gleam", "hatch", "inlet", "joint", "kneel", "label", "macro", "needy", "optic",
-    "prime", "quart", "reign", "sweep", "tango", "urged", "visit", "wager", "xerox", "young", "zippy",
-    "angel", "beach", "civic", "dizzy", "elite", "flesh", "gorge", "haste", "ideal", "jewel", "knock",
-    "loyal", "major", "noble", "organ", "pride", "quell", "rival", "sheep", "thump", "upset", "vocal",
-    "witty", "xylem", "yeast", "zebra", "actor", "brisk", "chant", "devil", "evoke", "flame", "grasp",
-    "haste", "issue", "judge", "knees", "lucky", "might", "ninth", "occur", "plant", "quote", "rigid",
-    "scale", "tried", "usual", "vague", "wrath", "xenon", "youth", "zonal", "agent", "blade", "coral",
-    "drake", "enjoy", "fable", "grain", "haste", "imply", "joker", "kiosk", "lodge", "match", "nurse",
-    "oxide", "piano", "quirk", "roast", "swirl", "toxic", "urban", "vault", "waltz", "xenon", "yeast",
-    "zebra", "alert", "boast", "crush", "delta", "eager", "fleet", "gauge", "honey", "inbox", "jazzy",
-    "kneel", "lunch", "model", "nicer", "occur", "plead", "quota", "risky", "squad", "truce", "unite",
-    "vivid", "wreak", "xerox", "yield", "zesty", "abbey", "bride", "craft", "deter", "extra", "final",
-    "gland", "hoist", "inlet", "jumps", "kinda", "latch", "miner", "niche", "optic", "prone", "queen",
-    "rapid", "shard", "trace", "ultra", "vigil", "wrist", "xeric", "youth", "zebra", "arena", "brave",
-    "creek", "dwell", "epoxy", "flick", "grief", "hinge", "inbox", "jiffy", "knead", "latch", "mirth",
-    "noble", "orbit", "pluck", "quack", "rinse", "spend", "treat", "unzip", "vowel", "wharf", "xenon",
-    "youth", "zippy", "abide", "basil", "chain", "drown", "edict", "faint", "golem", "haste", "ivory",
-    "jelly", "karma", "lemon", "medal", "night", "ozone", "poker", "quest", "rider", "straw", "trend",
-    "urine", "vixen", "wound", "xerox", "yeast", "zonal"
-]
+# Load words from external file
+def load_words(file_path):
+    if file_path.endswith(".txt"):
+        with open(file_path, "r") as file:
+            return [line.strip() for line in file.readlines()]
+    elif file_path.endswith(".json"):
+        with open(file_path, "r") as file:
+            return json.load(file)
+    else:
+        raise ValueError("Unsupported file format. Use .txt or .json for the word list.")
+
+# Specify the path to the word file
+WORDS_FILE_PATH = os.path.join(os.path.dirname(__file__), "data", "words.txt")  # Change to "words.json" if needed
+WORDS = load_words(WORDS_FILE_PATH)
 
 # MongoDB setup
 mongo_client = MongoClient(MONGO_URL)
