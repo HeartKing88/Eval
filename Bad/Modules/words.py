@@ -6,10 +6,15 @@ from Bad import app
 from Config import MONGO_URL
 import os
 import json
-import os
+
+# Resolve the correct path for words.json relative to the current script
+WORDS_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "words.json")
+
+# Check if the words.json file exists
+if not os.path.exists(WORDS_FILE_PATH):
+    raise FileNotFoundError(f"The words.json file was not found at {WORDS_FILE_PATH}")
 
 # Load words directly from words.json
-WORDS_FILE_PATH = os.path.join(os.path.dirname(__file__), "words.json")  # Specify the correct file name
 with open(WORDS_FILE_PATH, "r") as file:
     WORDS = json.load(file)
 
