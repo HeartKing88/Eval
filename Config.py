@@ -1,5 +1,6 @@
 from os import getenv
 from dotenv import load_dotenv
+from pymongo import MongoClient
 
 load_dotenv()
 
@@ -17,3 +18,8 @@ OWNER_ID = "7009601543"
 SUDOERS = "7009601543"
 STRING1 = ""
 STRING2 = ""
+
+#DATABSE
+mongo = MongoClient(MONGO_URL)
+db = mongo["faster_finger"]
+scores_col = db["scores"]
