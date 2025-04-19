@@ -132,6 +132,8 @@ async def wait_for_answer(chat_id, correct_word):
 
     try:
         return await asyncio.wait_for(future, timeout=15)
+    except asyncio.TimeoutError:
+        raise asyncio.TimeoutError("No correct answer received within the timeout period.")
     finally:
         # Remove the handler after the round ends
         app.remove_handler(message_handler)
