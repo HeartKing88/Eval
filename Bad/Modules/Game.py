@@ -10,7 +10,23 @@ words_list = ["apple", "table", "grape", "brush", "plant", "sweet", "tears", "ch
 
 @app.on_message(filters.command("start"))
 async def start(_, message: Message):
-    await message.reply("Welcome to **Fastest Finger Duel**!\nUse /play to start 1v1 game.\nCheck /leaderboard to see scores.")
+    await message.reply("Welcome to **Fastest Finger Duel**!\nUse /play to start 1v1 game.\nCheck /leaderboard to see scores.\nFor more commands, use /help.")
+
+@app.on_message(filters.command("help"))
+async def help_command(_, message: Message):
+    await message.reply(
+        "**Fastest Finger Duel Help**\n\n"
+        "Commands:\n"
+        "/start - Start the bot and get welcome message.\n"
+        "/play - Join a game or start a new one.\n"
+        "/leaderboard - View group or global leaderboard.\n"
+        "/myscore - Check your group and global scores.\n"
+        "/help - Show this help message.\n\n"
+        "How to play:\n"
+        "1. Use /play to join a game.\n"
+        "2. Guess the correct word from the jumbled letters.\n"
+        "3. Be the first to guess correctly and win points!"
+    )
 
 @app.on_message(filters.command("play"))
 async def play(_, message: Message):
@@ -23,7 +39,8 @@ async def play(_, message: Message):
             "scores": {},
             "round": 0,
             "current_word": None,
-            "active": False
+            "active": False,
+            "guesses": []  # To store guesses and their results
         }
         await message.reply("Waiting for opponent... Ask your friend to /play too.")
     else:
@@ -43,6 +60,7 @@ async def run_game(chat_id):
         jumbled = "".join(random.sample(word, len(word)))
         games[chat_id]["current_word"] = word
         games[chat_id]["round"] += 1
+        games[chat_id]["guesses"] = []  # Reset guesses for new round
 
         await app.send_message(chat_id, f"**Round {round_no + 1}**\nGuess the word: `{jumbled}`")
 
@@ -75,23 +93,48 @@ async def run_game(chat_id):
     del games[chat_id]
 
 async def wait_for_answer(chat_id, correct_word):
-    loop = asyncio.get_event_loop()
-    future = loop.create_future()
+    future = asyncio.Future()
 
-    @app.on_message(filters.text & filters.chat(chat_id))
-    async def checker(_, message: Message):
+    def calculate_feedback(guess, correct_word):
+        """Calculate the feedback for the guessed word."""
+        feedback = []
+        for i, char in enumerate(guess):
+            if i < len(correct_word) and char == correct_word[i]:
+                feedback.append("🟩")  # Correct letter and position
+            elif char in correct_word:
+                feedback.append("🟨")  # Correct letter but wrong position
+            else:
+                feedback.append("🟥")  # Incorrect letter
+        return "".join(feedback)
+
+    def checker(_, message: Message):
         if not games.get(chat_id) or not games[chat_id]["active"]:
             return
         if message.from_user.id not in games[chat_id]["players"]:
             return
-        if message.text.lower() == correct_word:
+
+        guess = message.text.lower()
+        feedback = calculate_feedback(guess, correct_word)
+        games[chat_id]["guesses"].append((message.from_user.first_name, feedback, guess))
+
+        # Display all guesses so far
+        guesses_text = "\n".join(
+            [f"{player}: {feedback} `{guessed_word}`" for player, feedback, guessed_word in games[chat_id]["guesses"]]
+        )
+        app.send_message(chat_id, f"**Guesses so far:**\n{guesses_text}")
+
+        if guess == correct_word:
             if not future.done():
                 future.set_result(message.from_user.id)
+
+    # Add the handler dynamically
+    message_handler = app.add_handler(filters.text & filters.chat(chat_id), checker)
 
     try:
         return await asyncio.wait_for(future, timeout=15)
     finally:
-        app.handlers["message"].pop()
+        # Remove the handler after the round ends
+        app.remove_handler(message_handler)
 
 @app.on_message(filters.command("leaderboard"))
 async def leaderboard(_, message: Message):
@@ -125,7 +168,7 @@ async def show_lb(_, query):
             InlineKeyboardButton("🌍 Global", callback_data="global_lb")
         ]
     ]))
-    
+
 @app.on_message(filters.command("myscore"))
 async def myscore(_, message: Message):
     user_id = message.from_user.id
@@ -141,4 +184,4 @@ async def myscore(_, message: Message):
         f"**Your Score:**\n\n"
         f"🏠 Group Score: {group_score} pts\n"
         f"🌍 Global Score: {global_score} pts"
-  )
+)
