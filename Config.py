@@ -21,5 +21,3 @@ STRING2 = ""
 
 #DATABSE
 mongo = MongoClient(MONGO_URL)
-db = mongo["faster_finger"]
-scores_col = db["scores"]
