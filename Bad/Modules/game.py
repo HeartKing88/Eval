@@ -1,15 +1,17 @@
 from Bad import app
 from pyrogram import filters
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import Message
 from Config import mongo
 from pymongo import ASCENDING
-import random
+import json
 
+# MongoDB collections
 games = mongo["wordgame"]["games"]
 scores = mongo["wordgame"]["scores"]
 
+# Load valid words from words.json
 with open("Bad/Modules/words.json") as f:
-    VALID_WORDS = set(f.read().splitlines())
+    VALID_WORDS = set(json.load(f))  # Ensure words.json is a JSON array of words
 
 # Active games structure: {chat_id: {"players": [user1, user2], "words": {user1: [], user2: []}}}
 active_games = {}
@@ -42,15 +44,24 @@ async def word_handler(_, message: Message):
     if user_id not in game["players"]:
         return
 
-    if len(word) != 5 or word not in VALID_WORDS:
+    # Validate the word
+    if len(word) != 5:
+        await message.reply(f"❌ '{word}' is not a 5-letter word!")
+        return
+
+    if word not in VALID_WORDS:
+        await message.reply(f"❌ '{word}' is not a valid word!")
         return
 
     if any(word in game["words"][p] for p in game["players"]):
-        await message.reply("This word has already been used!")
+        await message.reply("❌ This word has already been used!")
         return
 
+    # Add word to the player's list
     game["words"][user_id].append(word)
+    await message.reply(f"✅ '{word}' is valid!")
 
+    # Check if the player has won
     if len(game["words"][user_id]) == 10:
         await message.reply(f"{message.from_user.mention} wins and earns 25 points!")
         await update_score(user_id)
@@ -102,5 +113,6 @@ async def help_handler(_, message: Message):
         "Game Rules:\n"
         "- Type valid 5-letter words\n"
         "- First to enter 10 valid words wins 25 points\n"
-        "- No repeating words!"
-                      )
+        "- No repeating words!\n"
+        "- Valid words will show ✅, invalid words will show ❌"
+         )
