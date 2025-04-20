@@ -8,7 +8,7 @@ import random
 games = mongo["wordgame"]["games"]
 scores = mongo["wordgame"]["scores"]
 
-with open("words.json") as f:
+with open("Bad.Modules.words.json") as f:
     VALID_WORDS = set(f.read().splitlines())
 
 # Active games structure: {chat_id: {"players": [user1, user2], "words": {user1: [], user2: []}}}
