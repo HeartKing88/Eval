@@ -9,7 +9,7 @@ APP_ID = 25742938
 # Get this value from my.telegram.org/apps
 HASH_ID = "b35b715fe8dc0a58e8048988286fc5b6"
 # Get your token from @BotFather on Telegram.
-TOKEN = "7073124607:AAHSDXycwu9lsye8RrwDq2Gb0zEbu33Li94"
+TOKEN = "7073124607:AAFXcqEcH_7iQJ5hxfUdUxIDe3gwAp1GvXY"
 DB_NAME = "evalDB"
 #databse
 MONGO_URL = "mongodb+srv://knight_rider:GODGURU12345@knight.jm59gu9.mongodb.net/?retryWrites=true&w=majority"
