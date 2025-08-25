@@ -13,4 +13,4 @@ beautifulsoup4
 telethon
 nest_asyncio
 telegram
-python-telegram-bot==20.6
+python-telegram-bot
