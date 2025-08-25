@@ -16,12 +16,12 @@ async def start_command(client, message):
 💫 **ꜰᴏʀ ᴅᴇᴛᴀɪʟᴇᴅ ᴜꜱᴀɢᴇ , ᴛʏᴘᴇ /help ꜰᴏʀ ᴍᴏʀᴇ ɪɴꜰᴏ**! 📖"""
 
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("👑 ᴏᴡɴᴇʀ", url="https://t.me/II_BAD_BABY_II")],
-        [InlineKeyboardButton("🔔 sᴜᴘᴘᴏʀᴛ", url="https://t.me/PBX_CHAT"), InlineKeyboardButton("🛠 ᴜᴘᴅᴀᴛᴇ", url="https://t.me/HEROKUBIN_01")]
+        [InlineKeyboardButton("👑 ᴏᴡɴᴇʀ", url="https://t.me/Its_ydv_vikky")],
+        [InlineKeyboardButton("🔔 sᴜᴘᴘᴏʀᴛ", url="https://t.me/Exampurrs"), InlineKeyboardButton("🛠 ᴜᴘᴅᴀᴛᴇ", url="https://t.me/FONT_CHANNEL_01")]
     ])
 
     # URL of the image you want to include
-    image_url = "https://files.catbox.moe/n8sm5r.jpg"
+    image_url = "https://ibb.co/V0dLfF32"
 
     # Send the photo with the text and keyboard
     await message.reply_photo(photo=image_url, caption=text, reply_markup=keyboard)
