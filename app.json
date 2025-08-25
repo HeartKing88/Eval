@@ -1,7 +1,7 @@
 {
   "name": "Testing-Bot",
   "description": "A Simple Testing Telegram Bot Written in Python Using Pyrogram Library.",
-  "repository": "https://gitlab.com/Badhacker98/EvalCode",
+  "repository": "https://github.com/HeartKing88/Eval",
   "logo": "", 
   "stack": "container",
   "env": {
