@@ -38,20 +38,20 @@ async def help(client: Client, message: Message, from_menu=False):
 
     # Add permanent "Support" and "Update" buttons
     buttons.append([
-        InlineKeyboardButton("🥀 ꜱᴜᴘᴘᴏʀᴛ ❤️", url="https://t.me/PBX_CHAT"),
-        InlineKeyboardButton("🥀 ᴜᴘᴅᴀᴛᴇ ❤️", url="https://t.me/HEROKUBIN_01")
+        InlineKeyboardButton("🥀 ꜱᴜᴘᴘᴏʀᴛ ❤️", url="http://t.me/Exampurrs"),
+        InlineKeyboardButton("🥀 ᴜᴘᴅᴀᴛᴇ ❤️", url="https://t.me/FONT_CHANNEL_01")
     ])
 
     # Send the help menu
     if from_menu:
         await message.edit_media(
-            media=InputMediaPhoto(photo_url, caption="👻 ʜᴇʟᴘ ᴍᴇɴᴜ ʙᴀᴅᴜꜱᴇʀ ʙᴏᴛ ❤️\n🔍ꜱᴇʟᴇᴄᴛ ᴀ ᴘʟᴜɢɪɴ ᴛᴏ ꜱᴇᴇ ɪᴛꜱ ᴅᴇᴛᴀɪʟꜱ📂"),
+            media=InputMediaPhoto(photo_url, caption="👻 ʜᴇʟᴘ ᴍᴇɴᴜ ʙᴏᴛ ❤️\n🔍ꜱᴇʟᴇᴄᴛ ᴀ ᴘʟᴜɢɪɴ ᴛᴏ ꜱᴇᴇ ɪᴛꜱ ᴅᴇᴛᴀɪʟꜱ📂"),
             reply_markup=InlineKeyboardMarkup(buttons)
         )
     else:
         await message.reply_photo(
             photo_url,
-            caption="👻 ʜᴇʟᴘ ᴍᴇɴᴜ ʙᴀᴅᴜꜱᴇʀ ʙᴏᴛ ❤️\n🔍ꜱᴇʟᴇᴄᴛ ᴀ ᴘʟᴜɢɪɴ ᴛᴏ ꜱᴇᴇ ɪᴛꜱ ᴅᴇᴛᴀɪʟꜱ📂",
+            caption="👻 ʜᴇʟᴘ ᴍᴇɴᴜ ʙᴏᴛ ❤️\n🔍ꜱᴇʟᴇᴄᴛ ᴀ ᴘʟᴜɢɪɴ ᴛᴏ ꜱᴇᴇ ɪᴛꜱ ᴅᴇᴛᴀɪʟꜱ📂",
             reply_markup=InlineKeyboardMarkup(buttons)
         )
 
