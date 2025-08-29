@@ -8,6 +8,9 @@ plugin_details = {}
 # Global variable to keep track of the current plugin being viewed
 current_plugin_index = {}
 
+global current_plugin_index
+current_plugin_index = 0
+
 # Decorator to register plugins automatically
 def plugin(name, description):
     def decorator(func):
