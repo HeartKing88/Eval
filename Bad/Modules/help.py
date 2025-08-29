@@ -5,11 +5,8 @@ from Bad import app
 # Dictionary to store plugin details automatically
 plugin_details = {}
 
-# Global variable to keep track of the current plugin being viewed
+# Dictionary to keep track of the current plugin index per user
 current_plugin_index = {}
-
-global current_plugin_index
-current_plugin_index = 0
 
 # Decorator to register plugins automatically
 def plugin(name, description):
