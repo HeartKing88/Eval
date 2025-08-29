@@ -33,7 +33,12 @@ async def help(client: Client, message: Message, from_menu=False):
         for j in range(2):
             if i + j < len(plugin_list):
                 plugin_name = plugin_list[i + j]
-                row.append(InlineKeyboardButton(f"{i + j + 1}. {plugin_name}", callback_data=f"plugin_{i + j + 1}"))
+                row.append(
+                    InlineKeyboardButton(
+                        f"{i + j + 1}. {plugin_name}",
+                        callback_data=f"plugin_{i + j + 1}"
+                    )
+                )
         buttons.append(row)
 
     # Add permanent "Support" and "Update" buttons
@@ -45,7 +50,10 @@ async def help(client: Client, message: Message, from_menu=False):
     # Send the help menu
     if from_menu:
         await message.edit_media(
-            media=InputMediaPhoto(photo_url, caption="👻 ʜᴇʟᴘ ᴍᴇɴᴜ ʙᴏᴛ ❤️\n🔍ꜱᴇʟᴇᴄᴛ ᴀ ᴘʟᴜɢɪɴ ᴛᴏ ꜱᴇᴇ ɪᴛꜱ ᴅᴇᴛᴀɪʟꜱ📂"),
+            media=InputMediaPhoto(
+                photo_url,
+                caption="👻 ʜᴇʟᴘ ᴍᴇɴᴜ ʙᴏᴛ ❤️\n🔍ꜱᴇʟᴇᴄᴛ ᴀ ᴘʟᴜɢɪɴ ᴛᴏ ꜱᴇᴇ ɪᴛꜱ ᴅᴇᴛᴀɪʟꜱ📂"
+            ),
             reply_markup=InlineKeyboardMarkup(buttons)
         )
     else:
@@ -58,7 +66,6 @@ async def help(client: Client, message: Message, from_menu=False):
 # Callback handler for buttons
 @app.on_callback_query()
 async def button_handler(client, callback_query):
-    global current_plugin_index
     user_id = callback_query.from_user.id
     data = callback_query.data
 
